@@ -1,38 +1,79 @@
-#include "sort.h"
+#include"sort.h"
+/**
+ * swap - ...
+ * @x: ...
+ * @y: ....
+ */
+void swap(int *x, int *y)
+{
+	int temp = *x;
+	*x = *y;
+	*y = temp;
+}
+/**
+ * partition - .....
+ * @array: ....
+ * @lo: ....
+ * @hi:....
+ * @size:.....
+ *
+ * Return: ....;
+ */
+size_t partition(int *array, size_t lo, size_t hi, size_t size)
+{
+	size_t i, j;
+	int pivot;
+
+	pivot = array[hi];
+	i = lo - 1;
+	for (j = lo; j < hi; j++)
+	{
+		if (array[j] < pivot)
+		{
+			if (++i != j)
+			{
+				swap(&array[i], &array[j]);
+				print_array(array, size);
+			}
+		}
+	}
+	if (array[i + 1] > array[hi])
+	{
+		swap(&array[i + 1], &array[hi]);
+		print_array(array, size);
+	}
+	return (i + 1);
+}
+/**
+ * quicksort - ....;
+ * @array: ...
+ * @lo:....
+ * @hi:.....
+ * @size: ....
+ *
+ * Return:....
+ */
+void quicksort(int *array, int lo, int hi, size_t size)
+{
+	size_t pivot;
+
+	if (lo < hi)
+	{
+		pivot = partition(array, lo, hi, size);
+		quicksort(array, lo, pivot - 1, size);
+		quicksort(array, pivot + 1, hi, size);
+	}
+}
 /**
  * quick_sort - ....
+ * in ascending .....
  * @array: ...
  * @size: ...
- *Return: ...
- */
-
+ * Return:...
+*/
 void quick_sort(int *array, size_t size)
 {
-	size_t mid = size / 2;
-	size_t temp;
-
-	if (size <= 1)
+	if (array == NULL || size < 2)
 		return;
-	if (array[mid] < array[0])
-	{
-		temp = array[0];
-		array[0] = array[mid];
-		array[mid] = temp;
-		print_array(array, size);
-	}
-	if (array[size - 1] < array[0])
-	{
-		temp = array[0];
-		array[0] = array[size - 1];
-		array[size - 1] = temp;
-		print_array(array, size);
-	}
-	if (array[mid] < array[size - 1])
-	{
-		temp = array[mid];
-		array[mid] = array[size - 1];
-		array[size - 1] = temp;
-		print_array(array, size);
-	}
-
+	quicksort(array, 0, size - 1, size);
 }
